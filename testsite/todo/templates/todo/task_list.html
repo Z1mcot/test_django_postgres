@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список дел</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'todo/task_list.css' %}">
+</head>
+<body>
+    <div class="task-container">
+        <h1>Список дел для {{ request.user.username }}</h1>
+
+        <a href="{% url 'logout' %}">Выйти</a>
+
+        <form action="{% url 'add_task' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="title" placeholder="Добавить новую задачу" required>
+            <button type="submit">Добавить</button>
+        </form>
+
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    {{ task.title }}
+                    <a href="{% url 'delete_task' task.id %}">Удалить</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
